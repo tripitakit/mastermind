@@ -34,11 +34,11 @@ defmodule Mastermind.Game do
   end
 
   defp send_feedback(:waiting_for_a_guess, turn, guess, game) when turn < @turns do
-    %{game | guesses: game.guesses ++ [guess], turn: game.turn + 1}
+    %{game | status: :waiting_for_a_guess, guesses: game.guesses ++ [guess], turn: game.turn + 1}
   end
 
   defp send_feedback(:won, turn, guess, game) when turn <= @turns do
-    %{game | guesses: game.guesses ++ [guess]}
+    %{game | status: :won, guesses: game.guesses ++ [guess]}
   end
 
   defp send_feedback(_status, _turn, _guess, game), do: %{game | status: :game_over}
