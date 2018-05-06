@@ -9,7 +9,7 @@ defmodule Mastermind.Game do
 
   alias Mastermind.{Code, Game}
 
-  @turns 12
+  @turns 3
 
   def new_game(opts \\ :simple) do
     %Game{
@@ -23,39 +23,58 @@ defmodule Mastermind.Game do
   def make_guess(guessed, game = %Game{}) do
     {status, score} = score_guess(guessed, game.code)
 
-    score = %{
-      blacks: count_pins(score, :black),
-      whites: count_pins(score, :white)
-    }
-
     guess = %{code: guessed, score: score}
 
-    send_feedback(status, game.turn, guess, game)
+    respond(game, status, game.turn, guess)
   end
 
-  defp send_feedback(:waiting_for_a_guess, turn, guess, game) when turn < @turns do
-    %{game | status: :waiting_for_a_guess, guesses: game.guesses ++ [guess], turn: game.turn + 1}
+  defp respond(game, _status, turn, _guess) when turn > @turns do
+    %{game | status: :game_over}
   end
 
-  defp send_feedback(:won, turn, guess, game) when turn <= @turns do
-    %{game | status: :won, guesses: game.guesses ++ [guess]}
+  defp respond(game, :you_won!, _turn, guess) do
+    %{
+      game
+      | status: :you_won!,
+        guesses: game.guesses ++ [guess]
+    }
   end
 
-  defp send_feedback(_status, _turn, _guess, game), do: %{game | status: :game_over}
+  defp respond(game, :waiting_for_a_guess, turn, guess) when turn < @turns do
+    %{
+      game
+      | status: :waiting_for_a_guess,
+        guesses: game.guesses ++ [guess],
+        turn: game.turn + 1
+    }
+  end
+
+  defp respond(game, :waiting_for_a_guess, @turns, guess) do
+    %{
+      game
+      | status: :game_over,
+        guesses: game.guesses ++ [guess]
+    }
+  end
 
   # code breaked!
   defp score_guess(guessed, code) when guessed == code do
-    {:won, ~w(:black :black :black :black)}
+    {:you_won!, %{blacks: 4, whites: 0}}
   end
 
   # code not yet breaked
   defp score_guess(guessed, code) do
-    score =
+    scored =
       for p <- 0..3 do
         guessed_peg = Enum.at(guessed, p)
         code_peg = Enum.at(code, p)
         score_peg(guessed_peg, code_peg, code)
       end
+
+    score = %{
+      blacks: count_pins(scored, :black),
+      whites: count_pins(scored, :white)
+    }
 
     {:waiting_for_a_guess, score}
   end

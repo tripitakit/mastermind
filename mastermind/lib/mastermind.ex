@@ -1,4 +1,10 @@
 defmodule Mastermind do
-  defdelegate new_game(), to: Mastermind.Game
-  defdelegate make_guess(guessed, game), to: Mastermind.Game
+  def new_game() do
+    {:ok, pid} = Supervisor.start_child(Mastermind.Supervisor, [])
+    pid
+  end
+
+  def make_guess(game_pid, guess) do
+    GenServer.call(game_pid, {:make_guess, guess})
+  end
 end
