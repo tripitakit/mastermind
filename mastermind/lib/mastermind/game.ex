@@ -20,19 +20,32 @@ defmodule Mastermind.Game do
     }
   end
 
-  def make_guess(guessed, game = %Game{}) do
+  def guess(guessed, game = %Game{}) do
     {status, score} = score_guess(guessed, game.code)
 
     guess = %{code: guessed, score: score}
 
-    respond(game, status, game.turn, guess)
+    game
+    |> update_state!(status, game.turn, guess)
   end
 
-  defp respond(game, _status, turn, _guess) when turn > @turns do
+  def tally(game = %Game{}) do
+    %{
+      status: game.status,
+      turn: game.turn,
+      guesses: game.guesses
+    }
+  end
+
+  def solution(game = %Game{}), do: game.code
+
+  ###########################################################################
+
+  defp update_state!(game, _status, turn, _guess) when turn > @turns do
     %{game | status: :game_over}
   end
 
-  defp respond(game, :you_won!, _turn, guess) do
+  defp update_state!(game, :you_won!, _turn, guess) do
     %{
       game
       | status: :you_won!,
@@ -40,7 +53,7 @@ defmodule Mastermind.Game do
     }
   end
 
-  defp respond(game, :waiting_for_a_guess, turn, guess) when turn < @turns do
+  defp update_state!(game, :waiting_for_a_guess, turn, guess) when turn < @turns do
     %{
       game
       | status: :waiting_for_a_guess,
@@ -49,7 +62,7 @@ defmodule Mastermind.Game do
     }
   end
 
-  defp respond(game, :waiting_for_a_guess, @turns, guess) do
+  defp update_state!(game, :waiting_for_a_guess, @turns, guess) do
     %{
       game
       | status: :game_over,

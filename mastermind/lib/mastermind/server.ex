@@ -10,8 +10,14 @@ defmodule Mastermind.Server do
     {:ok, Game.new_game()}
   end
 
-  def handle_call({:make_guess, guess}, _from, game) do
-    game = Game.make_guess(guess, game)
-    {:reply, game, game}
+  def handle_call({:guess, guess}, _from, game) do
+    game = Game.guess(guess, game)
+    tally = Game.tally(game)
+    {:reply, tally, game}
+  end
+
+  def handle_call({:solution}, _from, game) do
+    solution = Game.solution(game)
+    {:reply, solution, game}
   end
 end
