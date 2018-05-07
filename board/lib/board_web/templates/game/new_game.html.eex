@@ -1,0 +1,3 @@
+<h1>Mastermind</h1>
+
+<%= link( "PLAY", to: "/play", method: :get, class: "button") %>

@@ -1,22 +1,97 @@
-<h1>
- Turn <%= @tally.turn %> => <%= @tally.status %>
-</h1>
+<h1>Mastermind</h1>
 
-<hr/>
-  <%= inspect @tally.solution%>
-<hr/>
-  
+<h2>
+ Turn <%= @tally.turn %> => <%= @tally.status %>
+</h2>
+
+
+
+
 <div class="board container">
+
+
+  <hr/>
+    <div class="row">
+
+      <%= form_for :guess, "/guess",  fn g ->  %>
+
+        <div class="peg col-sm-1">
+
+          <i class="material-icons" style="font-size:42px;color:red;">lens</i>
+        </div>
+
+        <div class="peg col-sm-1">
+          <i class="material-icons" style="font-size:42px;color:green;">lens</i>
+        </div>
+
+        <div class="peg col-sm-1">
+          <i class="material-icons" style="font-size:42px;color:blue;">lens</i>
+        </div>
+
+        <div class="peg col-sm-1">
+          <i class="material-icons" style="font-size:42px;color:orange;">lens</i>
+        </div>
+
+        <div class="peg col-sm-1">
+          <i class="material-icons" style="font-size:42px;color:magenta;">lens</i>
+        </div>
+
+        <div class="peg col-sm-1">
+          <i class="material-icons" style="font-size:42px;color:cyan">lens</i>
+        </div>
+
+        <div class="peg col-sm-3">
+          <%= submit "Submit", class: "btn btn-primary" %>
+          &nbsp;
+          <%= reset "Reset", class: "btn btn-warning" %>
+        </div>
+
+      <% end %>
+    </div>
+  <hr/>
+
   <%= for i <- 0..11 do  %>
     <div class="row turn_row">
-      <h2>
-        <div class="score col-sm-2">::</div>
-        <div class="turn col-sm-2"><%= i+1 %></div>
-        <div class="peg col-sm-1">O</div>
-        <div class="peg col-sm-1">O</div>
-        <div class="peg col-sm-1">O</div>
-        <div class="peg col-sm-1">O</div>
-      </h2>
+        <h3>
+          <div class="turn col-sm-1">
+          <%= i+1 %>
+          </div>
+        </h3>
+        
+        
+        <div class="peg col-sm-1">
+          <i class="material-icons" style="font-size:36px;">panorama_fish_eye</i>
+        </div>
+        <div class="peg col-sm-1">
+          <i class="material-icons" style="font-size:36px;">panorama_fish_eye</i>
+        </div>
+        <div class="peg col-sm-1">
+          <i class="material-icons" style="font-size:36px;">panorama_fish_eye</i>
+        </div>
+        <div class="peg col-sm-1">
+          <i class="material-icons" style="font-size:36px;">panorama_fish_eye</i>
+        </div>
+
+        <div class="score col-sm-3">
+
+          <i class="material-icons" style="font-size:18px;">panorama_fish_eye</i>
+       
+          <i class="material-icons" style="font-size:18px;">panorama_fish_eye</i>
+        
+          <i class="material-icons" style="font-size:18px;">panorama_fish_eye</i>
+      
+          <i class="material-icons" style="font-size:18px;">panorama_fish_eye</i>
+        </div>  
+
     </div>
-  <%= end %>
+  <% end %>
+
+  <h2>
+    <hr/>
+      <%= inspect @tally.solution%>
+    <hr/>
+  </h2>
 </div>
+
+
+<!-- <i class="material-icons" style="font-size:60px;color:red;">panorama_fish_eye</i> -->

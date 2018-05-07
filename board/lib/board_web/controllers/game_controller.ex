@@ -1,7 +1,12 @@
 defmodule BoardWeb.GameController do
   use BoardWeb, :controller
 
+
   def new_game(conn, _params) do
+    render(conn, "new_game.html")
+  end
+
+  def play(conn, _params) do
     game = Mastermind.new_game()
     solution = Mastermind.solution?(game)
 
