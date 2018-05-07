@@ -1,96 +1,68 @@
-<h1>Mastermind</h1>
-
-<h2>
- Turn <%= @tally.turn %> => <%= @tally.status %>
-</h2>
-
-
-
-
 <div class="board container">
 
+  <h1>Mastermind</h1>
 
-  <hr/>
+  <h3>Turn <%= @tally.turn %>: <%= @tally.status %></h3>
+
+  <!-- INPUT -->
+  <hr class="line"/>
     <div class="row">
 
-      <%= form_for :guess, "/guess",  fn g ->  %>
+      <%= form_tag("/guess", method: :post) do %>
 
-        <div class="peg col-sm-1">
+        <%= for color <- ~w(red green blue yellow magenta cyan) do %>
 
-          <i class="material-icons" style="font-size:42px;color:red;">lens</i>
-        </div>
+          <div class="peg col-sm-1 btn">
+            <i onclick="set_peg(<%= color %>)" class="material-icons" style="font-size:40px;color:<%= color %>;">lens</i>
+          </div>
+        
+        <% end %>
 
-        <div class="peg col-sm-1">
-          <i class="material-icons" style="font-size:42px;color:green;">lens</i>
-        </div>
-
-        <div class="peg col-sm-1">
-          <i class="material-icons" style="font-size:42px;color:blue;">lens</i>
-        </div>
-
-        <div class="peg col-sm-1">
-          <i class="material-icons" style="font-size:42px;color:orange;">lens</i>
-        </div>
-
-        <div class="peg col-sm-1">
-          <i class="material-icons" style="font-size:42px;color:magenta;">lens</i>
-        </div>
-
-        <div class="peg col-sm-1">
-          <i class="material-icons" style="font-size:42px;color:cyan">lens</i>
-        </div>
-
-        <div class="peg col-sm-3">
-          <%= submit "Submit", class: "btn btn-primary" %>
+        <div class="peg col-sm-4">
+          <%= submit "Submit", class: "btn-lg  btn-success" %>
           &nbsp;
-          <%= reset "Reset", class: "btn btn-warning" %>
+          <%= reset "Reset", class: "btn-lg  btn-danger" %>
         </div>
 
       <% end %>
     </div>
-  <hr/>
+  <hr class="line"/>
 
-  <%= for i <- 0..11 do  %>
+  
+  <!-- TURNS -->
+
+  <%= for turn <- 0..11 do  %>
     <div class="row turn_row">
-        <h3>
           <div class="turn col-sm-1">
-          <%= i+1 %>
+          <h4><%= turn + 1 %></h4>
           </div>
-        </h3>
         
-        
-        <div class="peg col-sm-1">
-          <i class="material-icons" style="font-size:36px;">panorama_fish_eye</i>
-        </div>
-        <div class="peg col-sm-1">
-          <i class="material-icons" style="font-size:36px;">panorama_fish_eye</i>
-        </div>
-        <div class="peg col-sm-1">
-          <i class="material-icons" style="font-size:36px;">panorama_fish_eye</i>
-        </div>
-        <div class="peg col-sm-1">
-          <i class="material-icons" style="font-size:36px;">panorama_fish_eye</i>
-        </div>
+        <!-- CODE -->
+        <%= for peg <- 0..3 do %>
+          <% peg_id = "turn#{turn}peg#{peg}"%>
+          <div class="peg col-sm-1">
+            <i id="<%= peg_id %>"  class="material-icons" style="font-size:36px;">panorama_fish_eye</i>
+          </div>
+        <% end %>
+      
 
+        <!-- SCORE -->
         <div class="score col-sm-3">
 
-          <i class="material-icons" style="font-size:18px;">panorama_fish_eye</i>
-       
-          <i class="material-icons" style="font-size:18px;">panorama_fish_eye</i>
-        
-          <i class="material-icons" style="font-size:18px;">panorama_fish_eye</i>
-      
-          <i class="material-icons" style="font-size:18px;">panorama_fish_eye</i>
-        </div>  
+          <%= for score <- 0..3 do %>
+             <% score_id = "turn#{turn}score#{score}"%>
+            <div class="peg col-sm-1">
+              <i id="<%= score_id %>" class="material-icons" style="font-size:18px;">panorama_fish_eye</i>
+            </div>
+          <% end %>
 
+        </div>  
     </div>
   <% end %>
 
-  <h2>
-    <hr/>
+    <hr class="line"/>
       <%= inspect @tally.solution%>
-    <hr/>
-  </h2>
+     <hr class="line"/>
 </div>
 
 

@@ -20,6 +20,9 @@ defmodule BoardWeb.Router do
     get("/", GameController, :new_game)
 
     get("/play", GameController, :play)
+
+    post("/guess", GameController, :guess)
+
   end
 
   # Other scopes may use custom stacks.
