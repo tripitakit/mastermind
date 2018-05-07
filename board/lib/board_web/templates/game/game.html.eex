@@ -1,0 +1,22 @@
+<h1>
+ Turn <%= @tally.turn %> => <%= @tally.status %>
+</h1>
+
+<hr/>
+  <%= inspect @tally.solution%>
+<hr/>
+  
+<div class="board container">
+  <%= for i <- 0..11 do  %>
+    <div class="row turn_row">
+      <h2>
+        <div class="score col-sm-2">::</div>
+        <div class="turn col-sm-2"><%= i+1 %></div>
+        <div class="peg col-sm-1">O</div>
+        <div class="peg col-sm-1">O</div>
+        <div class="peg col-sm-1">O</div>
+        <div class="peg col-sm-1">O</div>
+      </h2>
+    </div>
+  <%= end %>
+</div>
