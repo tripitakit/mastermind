@@ -1,7 +1,7 @@
 defmodule Mastermind.Game.StateUpdater do
   @turns 12
 
-  def update_state!(game, status, turn, guess) do
+  def update_state!(game, status, turn, guess \\ nil) do
     update_state(game, status, turn, guess)
   end
 
@@ -32,5 +32,9 @@ defmodule Mastermind.Game.StateUpdater do
       | status: :game_over,
         guesses: game.guesses ++ [guess]
     }
+  end
+
+  defp update_state(game, :wrong_input, _turn, _guess) do
+    %{game | status: :wrong_input}
   end
 end

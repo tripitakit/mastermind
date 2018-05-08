@@ -20,12 +20,15 @@ defmodule Mastermind.Game do
   end
 
   def guess(guessed, game = %Game{}) do
-    {status, score} = ScoreHelper.score_guess(guessed, game.code)
+    cond do
+      is_list(guessed) and Enum.count(guessed) == 4 ->
+        {status, score} = ScoreHelper.score_guess(guessed, game.code)
+        guess = %{code: guessed, score: score}
+        StateUpdater.update_state!(game, status, game.turn, guess)
 
-    guess = %{code: guessed, score: score}
-
-    game
-    |> StateUpdater.update_state!(status, game.turn, guess)
+      true ->
+        StateUpdater.update_state!(game, :wrong_input, game.turn)
+    end
   end
 
   def tally(game = %Game{}) do

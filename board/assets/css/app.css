@@ -1,10 +1,10 @@
 /* This file is for your main application css. */
 
 .container {
-  background-color: hsl(23, 42%, 28%);
-  color: rgb(193, 152, 111);
+  background-color: rgb(184, 184, 184);
+  color: rgb(77, 77, 77);
 }
 
 .line {
-  border-top: 1px solid rgb(193, 152, 111);
+  border-top: 1px solid rgb(77, 77, 77);
 }
