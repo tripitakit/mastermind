@@ -1,3 +1,7 @@
-<h1>Mastermind</h1>
+<h1>MASTERMIND</h1>
 
-<%= link( "PLAY", to: "/play", method: :get, class: "button") %>
+<hr class="line"/>
+
+<%= link( "PLAY", to: "/play", method: :get, class: "btn btn-success btn-lg btn-block") %>
+
+<hr class="line"/>

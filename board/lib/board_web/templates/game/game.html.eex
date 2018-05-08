@@ -1,84 +1,77 @@
-<div class="board container">
 
-  <h1>MASTERMIND</h1>
-  
-  <!-- INPUT -->
-    <div class="row">
-      <%= form_tag("/guess", method: :post, id: "input_guess", turn: @tally.turn) do %>
-        <div class="col-sm-1"></div>
-        <div class="peg col-sm-4 btn">
-          <%= for color <- ~w(red green blue yellow magenta cyan) do %>
-            <i onclick="set_peg('<%= color %>', <%= @tally.turn %>);" class="material-icons" style="font-size:36px;color:<%= color %>;">lens</i>
-          <% end %>
-        </div>
-        <%= hidden_input(:code, :guess) %>
+<h1>MASTERMIND</h1>
 
-        <div class="peg col-sm-4">
-          <%= submit "Submit", class: "btn-lg btn-success" %>
-          &nbsp;
-          <%= reset "Reset", class: "btn-lg btn-danger" %>
-        </div>
-
-      <% end %>  
-
+<!-- INPUT -->
+<div class="row">
+  <%= form_tag("/guess", method: :post, id: "input_guess", turn: @tally.turn) do %>
+    <div class="col-sm-1"></div>
+    <div class="peg col-sm-4 btn">
+      <%= for color <- ~w(red green blue yellow magenta cyan) do %>
+        <i onclick="set_peg('<%= color %>', <%= @tally.turn %>);" class="material-icons" style="font-size:36px;color:<%= color %>;">lens</i>
+      <% end %>
     </div>
-  <hr class="line"/>
+    <%= hidden_input(:code, :guess) %>
 
-  
-  <!-- TURNS -->
-
-  <%= for turn <- 1..12 do  %>
-    <div class="row turn_row">
-          <div class="col-sm-1"></div>
-
-          <div class="turn col-sm-1">
-          <h4 style="color:<%= highlight_current_turn(turn, @tally.turn)%>">
-            <%= turn %>
-          </h4>
-          </div>
-        
-        <!-- CODE -->
-        <%= for peg <- 0..3 do %>
-          <% peg_id = "turn#{turn}peg#{peg}"%>
-          <div class="peg col-sm-1">
-
-            <%= if color = guessed_color(@tally.guesses, turn, peg) do %>
-              <i id="<%= peg_id %>" class="material-icons" style="font-size:36px;color:<%= color %>">lens</i>
-            <% else %>
-              <i id="<%= peg_id %>" class="material-icons" style="font-size:36px;">panorama_fish_eye</i>
-            <% end %>
-          </div>
-        <% end %>
-      
-
-        <!-- SCORE -->
-        <div class="score col-sm-2">
-
-          <%= for score_pos <- 0..3 do %>
-           
-            
-              
-              <%= case score_pins(@tally.guesses, turn, score_pos) do %>  
-                <% :black -> %>
-                  <i  class="material-icons" style="font-size:18px;color:black">lens</i>
-                <% :white -> %>
-                  <i  class="material-icons" style="font-size:18px;color:white">lens</i>
-                <% :none -> %>
-                  <i  class="material-icons" style="font-size:18px;">panorama_fish_eye</i>
-              <% end %>    
-
-          
-          <% end %>
-
-        </div>  
+    <div class="peg col-sm-4">
+      <%= submit "Guess", class: "btn-lg btn-success"%>
+      &nbsp;
+      <%= reset "Reset", class: "btn-lg btn-danger" %>
     </div>
-  <% end %>
 
-    <hr class="line"/>
-      <h4>
-        <%= game_status(@tally) %> 
-      </h4>  
-    <hr class="line"/>
+  <% end %>  
+
 </div>
+<hr class="line"/>
+
+
+<!-- TURNS -->
+
+<%= for turn <- 1..12 do  %>
+  <div class="row turn_row">
+        <div class="col-sm-1"></div>
+
+        <div class="turn col-sm-1">
+        <h4 style="color:<%= highlight_current_turn(turn, @tally.turn)%>">
+          <%= turn %>
+        </h4>
+        </div>
+      
+      <!-- CODE -->
+      <%= for peg <- 0..3 do %>
+        <% peg_id = "turn#{turn}peg#{peg}"%>
+        <div class="peg col-sm-1">
+          <%= if color = guessed_color(@tally.guesses, turn, peg) do %>
+            <i id="<%= peg_id %>" class="material-icons" style="font-size:36px;color:<%= color %>">lens</i>
+          <% else %>
+            <i id="<%= peg_id %>" class="material-icons" style="font-size:36px;">panorama_fish_eye</i>
+          <% end %>
+        </div>
+      <% end %>
+    
+
+      <!-- SCORE -->
+      <div class="score col-sm-2">
+
+        <%= for score_pos <- 0..3 do %>
+          <%= case score_pins(@tally.guesses, turn, score_pos) do %>  
+            <% :black -> %>
+              <i  class="material-icons" style="font-size:18px;color:black">lens</i>
+            <% :white -> %>
+              <i  class="material-icons" style="font-size:18px;color:white">lens</i>
+            <% :none -> %>
+              <i  class="material-icons" style="font-size:18px;">panorama_fish_eye</i>
+          <% end %>    
+        <% end %>
+      </div>  
+  </div>
+<% end %>
+
+<!-- STATUS -->
+<hr class="line"/>
+  <h4>
+    <%= game_status(@tally) %> 
+  </h4>  
+<hr class="line"/>
+
 
 
